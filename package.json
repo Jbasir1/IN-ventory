@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/Jbasir1/IN-ventory#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^6.0.1"
   }
 }

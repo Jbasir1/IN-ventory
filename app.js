@@ -8,22 +8,35 @@ const app = express();
 const port = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(__dirname + "/public"));    // make the public folder the default one
+app.use(express.static(__dirname + "/public")); 
 
 app.use(express.static(path.join(__dirname + "/public")));
 app.set("view engine", "ejs");
-// Routes - all 3 are get requests as we are serving static files
-// This typically (as it does here) represents the 'Home' page.
-// We are sending the HTML file, index.html, to the client
-
 app.get('/', (req, res) => {
-    res.render('pages/products');
+    getDBConnection()
+    .then((db) => {
+        return db.all('SELECT * FROM inventory');
+    })
+    .then((product) => {
+        res.render('pages/products', {
+            title: 'Product'
+        });
+    })
+    .catch((error) => {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    });
+    
 });
 app.get('/about', (req, res) => {
-    res.render('pages/about');
+    res.render('pages/about', {
+        title: "About"
+    });
 });
 app.get('/contact', (req, res) => {
-    res.render('pages/contact');
+    res.render('pages/contact', {
+        title: 'Contact'
+    });
 });
 setupDatabase()
 .then(() => {

@@ -14,15 +14,16 @@ export const setupDatabase = () => {
                 genre TEXT,
                 cost DECIMAL(10,2),
                 stock INTEGER,
-                rating DECIMAL(3,1)
+                rating DECIMAL(3,1),
+                image_url TEXT
                 )
             `).then(() => {
                 return db.run(`
-                    INSERT INTO inventory (id, name, genre, cost, stock, rating)
+                    INSERT INTO inventory (name, genre, cost, stock, rating, image_url)
                     VALUES
-                        (1, 'Silent Hill 2', 'Horror', 45.99, 15, 4.7),
-                        (2, 'Grand Theft Auto 6', 'Action', 70, 21, 5.0),
-                        (3, 'Destiny 3', 'Looter', 70, 11, 4.3)
+                        ('Silent Hill 2', 'Horror', 45.99, 15, 4.7, '/images/silenthill2.png'),
+                        ('Grand Theft Auto 6', 'Action', 70, 21, 5.0, '/images/GTA6.png'),
+                        ('Destiny 3', 'Looter', 70, 11, 4.3, '/images/Destiny3.png')
                     `);
             }).then(() => {
                 console.log('Database setup complete. ');

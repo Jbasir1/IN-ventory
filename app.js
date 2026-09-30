@@ -13,13 +13,17 @@ app.use(express.static(__dirname + "/public"));
 app.use(express.static(path.join(__dirname + "/public")));
 app.set("view engine", "ejs");
 app.get('/', (req, res) => {
+    res.redirect('/products');
+});
+app.get('/products', (req, res) => {
     getDBConnection()
     .then((db) => {
         return db.all('SELECT * FROM inventory');
     })
-    .then((product) => {
+    .then((inventory) => {
         res.render('pages/products', {
-            title: 'Product'
+            title: 'Product',
+            inventory: inventory
         });
     })
     .catch((error) => {
@@ -28,6 +32,11 @@ app.get('/', (req, res) => {
     });
     
 });
+app.get('/products', (req, res) => {
+    res.render('pages/products', {
+        title: 'Products'
+    })
+})
 app.get('/about', (req, res) => {
     res.render('pages/about', {
         title: "About"

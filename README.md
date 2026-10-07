@@ -18,3 +18,9 @@ Indy Game Vault is a Node.js, Express, and EJS prototype built for a small video
   * Home/Inventory: `/`
   * About Page: `/about`
   * Contact Page: `/contact`
+
+
+https://github.com/user-attachments/assets/131fe8fb-cc50-4e1c-bcf6-3584a4fe18f4
+
+
+

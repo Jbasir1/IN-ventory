@@ -2,7 +2,8 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { setupDatabase, getDBConnection } from "./database.js";
-
+const path = require('path');
+const dbPath = path.resolve(__dirname, 'database.sqlite');
 
 const app = express();
 const port = 3000;

@@ -2,20 +2,24 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { setupDatabase, getDBConnection } from "./database.js";
-const path = require('path');
-const dbPath = path.resolve(__dirname, 'database.sqlite');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const dbPath = process.env.NODE_ENV === 'production'
+  ? '/var/lib/myapp/database.sqlite'
+  : path.resolve(__dirname, 'database.sqlite');
 
 const app = express();
 const port = 3000;
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(__dirname + "/public")); 
 
-app.use(express.static(path.join(__dirname + "/public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
+
 app.get('/', (req, res) => {
     res.redirect('/products');
 });
+
 app.get('/products', (req, res) => {
     getDBConnection()
     .then((db) => {
@@ -23,7 +27,7 @@ app.get('/products', (req, res) => {
     })
     .then((inventory) => {
         res.render('pages/products', {
-            title: 'Product',
+            title: 'Products',
             inventory: inventory
         });
     })
@@ -31,29 +35,26 @@ app.get('/products', (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     });
-    
 });
-app.get('/products', (req, res) => {
-    res.render('pages/products', {
-        title: 'Products'
-    })
-})
+
 app.get('/about', (req, res) => {
     res.render('pages/about', {
         title: "About"
     });
 });
+
 app.get('/contact', (req, res) => {
     res.render('pages/contact', {
         title: 'Contact'
     });
 });
+
 setupDatabase()
 .then(() => {
-app.listen(port, () => {
-console.log(`App listening at port ${port}`);
-});
+    app.listen(port, () => {
+        console.log(`App listening at port ${port}`);
+    });
 })
 .catch(err => {
-console.error("Database setup failed:", err);
+    console.error("Database setup failed:", err);
 });
